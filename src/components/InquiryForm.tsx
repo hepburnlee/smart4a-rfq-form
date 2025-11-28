@@ -328,7 +328,7 @@ export function InquiryForm() {
       </FormSection>
 
       {/* Consultant Services */}
-      <FormSection icon={Briefcase} title="顧問服務（訂閱制）">
+      <FormSection icon={Briefcase} title="顧問服務">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
             <Label className="text-sm">選擇方案等級</Label>
@@ -341,9 +341,9 @@ export function InquiryForm() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="none">-- 不需此服務 --</SelectItem>
-                <SelectItem value="輕量型">輕量型（每月1次現場指導）</SelectItem>
-                <SelectItem value="中量型">中量型（每月2次現場指導）</SelectItem>
-                <SelectItem value="重量型">重量型（每週1次現場指導）</SelectItem>
+                <SelectItem value="輕量型">輕量型（每月1次現場指導）- NT$ 30,000/月起</SelectItem>
+                <SelectItem value="中量型">中量型（每月2次現場指導）- NT$ 50,000/月起</SelectItem>
+                <SelectItem value="重量型">重量型（每週1次現場指導）- NT$ 100,000/月起</SelectItem>
               </SelectContent>
             </Select>
           </div>
