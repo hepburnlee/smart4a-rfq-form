@@ -137,10 +137,30 @@ export function InquiryForm() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    try {
+      const response = await fetch("https://hook.us1.make.com/h5s81lr2dgkbf8ese52sd83g3kik8war", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          totalPrice,
+          timestamp: new Date().toISOString(),
+        }),
+      });
 
-    toast.success("詢價單已成功送出！我們將盡快與您聯繫。");
-    setIsSubmitting(false);
+      if (response.ok) {
+        toast.success("詢價單已成功送出！我們將盡快與您聯繫。");
+      } else {
+        toast.error("送出失敗，請稍後再試。");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast.error("送出失敗，請檢查網路連線。");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
