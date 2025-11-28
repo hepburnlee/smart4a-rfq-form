@@ -23,11 +23,11 @@ export function OptionCard({
   children,
 }: OptionCardProps) {
   return (
-    <div className="mb-4">
+    <div>
       <div
         onClick={onSelect}
         className={cn(
-          "relative flex gap-4 p-5 sm:p-6 rounded-xl border cursor-pointer transition-all duration-300",
+          "relative flex gap-4 p-6 rounded-xl border cursor-pointer transition-all duration-300",
           "hover:border-primary/50 hover:shadow-md",
           selected
             ? "border-primary/60 bg-accent/50 shadow-sm"
@@ -62,7 +62,7 @@ export function OptionCard({
       
       {/* Expandable content with smooth animation */}
       {hasExpandableContent && selected && children && (
-        <div className="border border-t-0 border-primary/40 rounded-b-xl p-5 sm:p-6 bg-accent/30 -mt-2 pt-6 animate-in fade-in slide-in-from-top-1 duration-300">
+        <div className="border border-t-0 border-primary/40 rounded-b-xl p-6 bg-accent/30 -mt-3 pt-8 animate-in fade-in slide-in-from-top-1 duration-300">
           {children}
         </div>
       )}
