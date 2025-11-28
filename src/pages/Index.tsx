@@ -3,7 +3,7 @@ import { InquiryForm } from "@/components/InquiryForm";
 const Index = () => {
   return (
     <main className="min-h-screen bg-background py-12 px-4 sm:px-6">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-3xl mx-auto">
         {/* Main Card */}
         <div className="bg-card rounded-2xl shadow-lg border border-border/50 overflow-hidden">
           {/* Elegant top accent */}
