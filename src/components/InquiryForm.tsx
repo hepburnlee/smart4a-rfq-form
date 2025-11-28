@@ -130,24 +130,10 @@ export function InquiryForm() {
   const hasCustomPlan = formData.projectPlan === "企業客製方案";
 
   const buildSummary = () => {
-    const lines: string[] = [];
-    lines.push(`📋 ${formData.company}`);
-    lines.push(`👤 ${formData.contactPerson} / ${formData.email}`);
-    
-    if (formData.projectPlan) {
-      lines.push(`📦 方案：${formData.projectPlan}`);
-    }
-    if (formData.consultantTier && formData.consultantTier !== "none") {
-      lines.push(`💼 顧問：${formData.consultantTier}（${formData.consultantType}）`);
-    }
-    if (formData.trainingType) {
-      lines.push(`🔧 ${formData.trainingType}：${formData.trainingTier}（${formData.trainingHours}小時）`);
-    }
     if (totalPrice > 0) {
-      lines.push(`💰 預估金額：NT$ ${totalPrice.toLocaleString()}`);
+      return `${formData.company} - NT$ ${totalPrice.toLocaleString()}`;
     }
-    
-    return lines.join("\n");
+    return formData.company;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
