@@ -133,6 +133,33 @@ export function InquiryForm() {
 
   const hasCustomPlan = formData.projectPlans.includes("企業客製方案");
 
+  const buildSummary = () => {
+    const lines: string[] = [];
+    lines.push(`📋 ${formData.company}`);
+    lines.push(`👤 ${formData.contactPerson} / ${formData.email}`);
+    
+    if (formData.projectPlans.length > 0) {
+      lines.push(`📦 方案：${formData.projectPlans.join("、")}`);
+    }
+    if (formData.consultantTier && formData.consultantTier !== "none") {
+      lines.push(`💼 顧問：${formData.consultantTier}（${formData.consultantType}）`);
+    }
+    if (formData.techGuidance) {
+      lines.push(`🔧 技術指導：${formData.techGuidanceHours}小時`);
+    }
+    if (formData.eduTraining) {
+      lines.push(`📚 教育訓練：${formData.eduTrainingHours}小時`);
+    }
+    if (formData.coaching) {
+      lines.push(`🎯 教練指導：${formData.coachHours}小時`);
+    }
+    if (totalPrice > 0) {
+      lines.push(`💰 預估金額：NT$ ${totalPrice.toLocaleString()}`);
+    }
+    
+    return lines.join("\n");
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -151,7 +178,10 @@ export function InquiryForm() {
       });
 
       if (response.ok) {
-        toast.success("詢價單已成功送出！我們將盡快與您聯繫。");
+        toast.success("詢價單已成功送出！", {
+          description: buildSummary(),
+          duration: 8000,
+        });
       } else {
         toast.error("送出失敗，請稍後再試。");
       }
