@@ -9,6 +9,16 @@ import { OptionCard } from "@/components/form/OptionCard";
 import { PriceSummary } from "@/components/form/PriceSummary";
 import { toast } from "sonner";
 import { Send, Building2, Rocket, Briefcase, Wrench } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface FormData {
   company: string;
@@ -85,8 +95,8 @@ export function InquiryForm() {
   };
 
   const [formData, setFormData] = useState<FormData>(initialFormData);
-
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
   const updateField = <K extends keyof FormData>(key: K, value: FormData[K]) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
@@ -140,7 +150,19 @@ export function InquiryForm() {
     (formData.consultantTier && formData.consultantTier !== "none") || 
     formData.trainingType;
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const getSelectedServicesSummary = () => {
+    const services: string[] = [];
+    if (formData.projectPlan) services.push(`• ${formData.projectPlan}`);
+    if (formData.consultantTier && formData.consultantTier !== "none") {
+      services.push(`• 顧問服務：${formData.consultantTier}（${formData.consultantType}）`);
+    }
+    if (formData.trainingType) {
+      services.push(`• ${formData.trainingType}：${formData.trainingHours} 小時`);
+    }
+    return services;
+  };
+
+  const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!hasAnyServiceSelected) {
@@ -150,6 +172,11 @@ export function InquiryForm() {
       return;
     }
 
+    setShowConfirmDialog(true);
+  };
+
+  const handleConfirmedSubmit = async () => {
+    setShowConfirmDialog(false);
     setIsSubmitting(true);
 
     try {
@@ -183,7 +210,35 @@ export function InquiryForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <>
+    <AlertDialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>確認送出詢價單</AlertDialogTitle>
+          <AlertDialogDescription asChild>
+            <div className="space-y-3">
+              <p>您選擇的服務項目：</p>
+              <div className="text-left space-y-1">
+                {getSelectedServicesSummary().map((service, idx) => (
+                  <p key={idx} className="text-sm">{service}</p>
+                ))}
+              </div>
+              {totalPrice > 0 && (
+                <p className="font-medium text-foreground pt-2">
+                  預估金額：NT$ {totalPrice.toLocaleString()}
+                </p>
+              )}
+            </div>
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>取消</AlertDialogCancel>
+          <AlertDialogAction onClick={handleConfirmedSubmit}>確認送出</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+
+    <form onSubmit={handleFormSubmit}>
       {/* Contact Information */}
       <FormSection icon={Building2} title="客戶聯絡資訊">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -532,5 +587,6 @@ export function InquiryForm() {
         )}
       </Button>
     </form>
+    </>
   );
 }
