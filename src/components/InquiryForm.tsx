@@ -24,12 +24,8 @@ interface FormData {
   consultantType: string;
   consultantAddonRag: string;
   trainingType: string;
-  techGuidanceType: string;
-  techGuidanceHours: number;
-  eduTrainingLevel: string;
-  eduTrainingHours: number;
-  coachType: string;
-  coachHours: number;
+  trainingTier: string;
+  trainingHours: number;
   notes: string;
 }
 
@@ -41,25 +37,31 @@ const CONSULTANT_PRICES: Record<string, Record<string, number>> = {
 
 const RAG_PRICE = 30000;
 
-const TECH_PRICES: Record<string, number> = {
-  基礎講師: 5000,
-  指定講師: 7000,
+const TRAINING_PRICES: Record<string, Record<string, number>> = {
+  專案技術指導: {
+    基礎講師: 5000,
+    指定講師: 7000,
+  },
+  企業教育訓練: {
+    "基礎課程_基礎講師": 6000,
+    "基礎課程_指定講師": 8000,
+    "中階課程_基礎講師": 7000,
+    "中階課程_指定講師": 9000,
+    "進階課程_基礎講師": 8000,
+    "進階課程_指定講師": 10000,
+  },
+  教練指導: {
+    "1對1_基礎": 3000,
+    "1對1_指定": 4500,
+    "1對多_基礎": 4500,
+    "1對多_指定": 6000,
+  },
 };
 
-const EDU_PRICES: Record<string, number> = {
-  "基礎課程_基礎講師": 6000,
-  "基礎課程_指定講師": 8000,
-  "中階課程_基礎講師": 7000,
-  "中階課程_指定講師": 9000,
-  "進階課程_基礎講師": 8000,
-  "進階課程_指定講師": 10000,
-};
-
-const COACH_PRICES: Record<string, number> = {
-  "1對1_基礎": 3000,
-  "1對1_指定": 4500,
-  "1對多_基礎": 4500,
-  "1對多_指定": 6000,
+const TRAINING_DEFAULTS: Record<string, { tier: string; hours: number }> = {
+  專案技術指導: { tier: "基礎講師", hours: 2 },
+  企業教育訓練: { tier: "基礎課程_基礎講師", hours: 3 },
+  教練指導: { tier: "1對1_基礎", hours: 2 },
 };
 
 export function InquiryForm() {
@@ -77,12 +79,8 @@ export function InquiryForm() {
     consultantType: "基礎費用",
     consultantAddonRag: "無",
     trainingType: "",
-    techGuidanceType: "基礎講師",
-    techGuidanceHours: 2,
-    eduTrainingLevel: "基礎課程_基礎講師",
-    eduTrainingHours: 3,
-    coachType: "1對1_基礎",
-    coachHours: 2,
+    trainingTier: "",
+    trainingHours: 2,
     notes: "",
   });
 
@@ -100,10 +98,13 @@ export function InquiryForm() {
   };
 
   const selectTrainingType = (type: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      trainingType: prev.trainingType === type ? "" : type,
-    }));
+    setFormData((prev) => {
+      if (prev.trainingType === type) {
+        return { ...prev, trainingType: "", trainingTier: "", trainingHours: 2 };
+      }
+      const defaults = TRAINING_DEFAULTS[type] || { tier: "", hours: 2 };
+      return { ...prev, trainingType: type, trainingTier: defaults.tier, trainingHours: defaults.hours };
+    });
   };
 
   const totalPrice = useMemo(() => {
@@ -117,16 +118,8 @@ export function InquiryForm() {
       if (formData.consultantAddonRag === "加購") total += RAG_PRICE;
     }
 
-    if (formData.trainingType === "techGuidance") {
-      total += (TECH_PRICES[formData.techGuidanceType] || 0) * formData.techGuidanceHours;
-    }
-
-    if (formData.trainingType === "eduTraining") {
-      total += (EDU_PRICES[formData.eduTrainingLevel] || 0) * formData.eduTrainingHours;
-    }
-
-    if (formData.trainingType === "coaching") {
-      total += (COACH_PRICES[formData.coachType] || 0) * formData.coachHours;
+    if (formData.trainingType && TRAINING_PRICES[formData.trainingType]) {
+      total += (TRAINING_PRICES[formData.trainingType][formData.trainingTier] || 0) * formData.trainingHours;
     }
 
     return total;
@@ -145,14 +138,8 @@ export function InquiryForm() {
     if (formData.consultantTier && formData.consultantTier !== "none") {
       lines.push(`💼 顧問：${formData.consultantTier}（${formData.consultantType}）`);
     }
-    if (formData.trainingType === "techGuidance") {
-      lines.push(`🔧 技術指導：${formData.techGuidanceHours}小時`);
-    }
-    if (formData.trainingType === "eduTraining") {
-      lines.push(`📚 教育訓練：${formData.eduTrainingHours}小時`);
-    }
-    if (formData.trainingType === "coaching") {
-      lines.push(`🎯 教練指導：${formData.coachHours}小時`);
+    if (formData.trainingType) {
+      lines.push(`🔧 ${formData.trainingType}：${formData.trainingTier}（${formData.trainingHours}小時）`);
     }
     if (totalPrice > 0) {
       lines.push(`💰 預估金額：NT$ ${totalPrice.toLocaleString()}`);
@@ -392,16 +379,16 @@ export function InquiryForm() {
           <OptionCard
             title="專案技術指導（Level 5）"
             description="針對專案開發遇到的關鍵問題，提供 1對1 手把手指導"
-            selected={formData.trainingType === "techGuidance"}
-            onSelect={() => selectTrainingType("techGuidance")}
+            selected={formData.trainingType === "專案技術指導"}
+            onSelect={() => selectTrainingType("專案技術指導")}
             hasExpandableContent
           >
             <div className="grid grid-cols-1 gap-4">
               <div className="space-y-2">
                 <Label className="text-sm">講師規格</Label>
                 <Select
-                  value={formData.techGuidanceType}
-                  onValueChange={(value) => updateField("techGuidanceType", value)}
+                  value={formData.trainingTier}
+                  onValueChange={(value) => updateField("trainingTier", value)}
                 >
                   <SelectTrigger className="h-12">
                     <SelectValue />
@@ -417,8 +404,8 @@ export function InquiryForm() {
                 <Input
                   type="number"
                   min={2}
-                  value={formData.techGuidanceHours}
-                  onChange={(e) => updateField("techGuidanceHours", parseInt(e.target.value) || 2)}
+                  value={formData.trainingHours}
+                  onChange={(e) => updateField("trainingHours", parseInt(e.target.value) || 2)}
                   className="h-12"
                 />
               </div>
@@ -428,16 +415,16 @@ export function InquiryForm() {
           <OptionCard
             title="企業教育訓練（Level 3+）"
             description="適用 5-30人團體課程，每單元3小時"
-            selected={formData.trainingType === "eduTraining"}
-            onSelect={() => selectTrainingType("eduTraining")}
+            selected={formData.trainingType === "企業教育訓練"}
+            onSelect={() => selectTrainingType("企業教育訓練")}
             hasExpandableContent
           >
             <div className="grid grid-cols-1 gap-4">
               <div className="space-y-2">
                 <Label className="text-sm">課程等級</Label>
                 <Select
-                  value={formData.eduTrainingLevel}
-                  onValueChange={(value) => updateField("eduTrainingLevel", value)}
+                  value={formData.trainingTier}
+                  onValueChange={(value) => updateField("trainingTier", value)}
                 >
                   <SelectTrigger className="h-12">
                     <SelectValue />
@@ -458,8 +445,8 @@ export function InquiryForm() {
                   type="number"
                   min={3}
                   step={3}
-                  value={formData.eduTrainingHours}
-                  onChange={(e) => updateField("eduTrainingHours", parseInt(e.target.value) || 3)}
+                  value={formData.trainingHours}
+                  onChange={(e) => updateField("trainingHours", parseInt(e.target.value) || 3)}
                   className="h-12"
                 />
               </div>
@@ -471,16 +458,16 @@ export function InquiryForm() {
           <OptionCard
             title="教練指導（Level 4+）"
             description="適用 5人以下小班制、1對1或團隊帶領"
-            selected={formData.trainingType === "coaching"}
-            onSelect={() => selectTrainingType("coaching")}
+            selected={formData.trainingType === "教練指導"}
+            onSelect={() => selectTrainingType("教練指導")}
             hasExpandableContent
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <Label className="text-sm">指導形式</Label>
                 <Select
-                  value={formData.coachType}
-                  onValueChange={(value) => updateField("coachType", value)}
+                  value={formData.trainingTier}
+                  onValueChange={(value) => updateField("trainingTier", value)}
                 >
                   <SelectTrigger className="h-12">
                     <SelectValue />
@@ -498,8 +485,8 @@ export function InquiryForm() {
                 <Input
                   type="number"
                   min={2}
-                  value={formData.coachHours}
-                  onChange={(e) => updateField("coachHours", parseInt(e.target.value) || 2)}
+                  value={formData.trainingHours}
+                  onChange={(e) => updateField("trainingHours", parseInt(e.target.value) || 2)}
                   className="h-12"
                 />
               </div>
