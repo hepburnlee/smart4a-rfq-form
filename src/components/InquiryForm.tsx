@@ -65,7 +65,7 @@ const TRAINING_DEFAULTS: Record<string, { tier: string; hours: number }> = {
 };
 
 export function InquiryForm() {
-  const [formData, setFormData] = useState<FormData>({
+  const initialFormData: FormData = {
     company: "",
     contactPerson: "",
     email: "",
@@ -82,7 +82,9 @@ export function InquiryForm() {
     trainingTier: "",
     trainingHours: 2,
     notes: "",
-  });
+  };
+
+  const [formData, setFormData] = useState<FormData>(initialFormData);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -170,6 +172,7 @@ export function InquiryForm() {
           description: buildSummary(),
           duration: 8000,
         });
+        setFormData(initialFormData);
       } else {
         toast.error("送出失敗，請稍後再試。");
       }
