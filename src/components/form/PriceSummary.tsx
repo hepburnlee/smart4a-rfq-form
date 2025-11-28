@@ -9,11 +9,11 @@ export function PriceSummary({ total, hasCustomPlan }: PriceSummaryProps) {
   };
 
   return (
-    <div className="bg-accent/40 border border-border/50 rounded-xl p-6 sm:p-8 mt-14">
+    <div className="bg-accent/40 border border-border/50 rounded-xl p-6 sm:p-8 mt-16">
       {/* Decorative header */}
       <div className="flex items-center justify-center mb-6">
         <div className="h-px w-8 bg-gradient-to-r from-transparent to-primary/30" />
-        <span className="mx-3 text-xs text-muted-foreground tracking-wider">お見積り</span>
+        <span className="mx-3 text-xs text-muted-foreground tracking-wider">ESTIMATE</span>
         <div className="h-px w-8 bg-gradient-to-l from-transparent to-primary/30" />
       </div>
       

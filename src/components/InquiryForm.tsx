@@ -144,7 +144,7 @@ export function InquiryForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-2">
+    <form onSubmit={handleSubmit}>
       {/* Contact Information */}
       <FormSection icon={Building2} title="客戶聯絡資訊">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -236,9 +236,9 @@ export function InquiryForm() {
         </div>
       </FormSection>
 
-      {/* Project Plans */}
+      {/* Project Plans - Two Column */}
       <FormSection icon={Rocket} title="陪跑與轉型方案">
-        <div className="space-y-5">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           <OptionCard
             title="基礎陪跑方案"
             description="48小時專業指導、3個自動化流程導入"
@@ -253,6 +253,8 @@ export function InquiryForm() {
             selected={formData.projectPlans.includes("完整轉型方案")}
             onSelect={() => toggleProjectPlan("完整轉型方案")}
           />
+        </div>
+        <div className="mt-5">
           <OptionCard
             title="企業客製方案"
             description="適合多部門整合、私有化部署、複雜權限管理設計"
@@ -276,27 +278,27 @@ export function InquiryForm() {
 
       {/* Consultant Services */}
       <FormSection icon={Briefcase} title="顧問服務（訂閱制）">
-        <div className="space-y-2">
-          <Label className="text-sm">選擇方案等級</Label>
-          <Select
-            value={formData.consultantTier}
-            onValueChange={(value) => updateField("consultantTier", value)}
-          >
-            <SelectTrigger className="h-12">
-              <SelectValue placeholder="-- 不需此服務 --" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="none">-- 不需此服務 --</SelectItem>
-              <SelectItem value="輕量型">輕量型（每月1次現場指導）</SelectItem>
-              <SelectItem value="中量型">中量型（每月2次現場指導）</SelectItem>
-              <SelectItem value="重量型">重量型（每週1次現場指導）</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <Label className="text-sm">選擇方案等級</Label>
+            <Select
+              value={formData.consultantTier}
+              onValueChange={(value) => updateField("consultantTier", value)}
+            >
+              <SelectTrigger className="h-12">
+                <SelectValue placeholder="-- 不需此服務 --" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">-- 不需此服務 --</SelectItem>
+                <SelectItem value="輕量型">輕量型（每月1次現場指導）</SelectItem>
+                <SelectItem value="中量型">中量型（每月2次現場指導）</SelectItem>
+                <SelectItem value="重量型">重量型（每週1次現場指導）</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
-        {formData.consultantTier && formData.consultantTier !== "none" && (
-          <div className="mt-5 p-6 border border-primary/40 rounded-xl bg-accent/30 animate-in fade-in slide-in-from-top-1 duration-300">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {formData.consultantTier && formData.consultantTier !== "none" && (
+            <>
               <div className="space-y-2">
                 <Label className="text-sm">顧問類型</Label>
                 <Select
@@ -312,7 +314,7 @@ export function InquiryForm() {
                   </SelectContent>
                 </Select>
               </div>
-              <div className="space-y-2">
+              <div className="space-y-2 md:col-span-2">
                 <Label className="text-sm">AI Knowledge 知識庫助理（RAG）</Label>
                 <Select
                   value={formData.consultantAddonRag}
@@ -328,14 +330,14 @@ export function InquiryForm() {
                   </SelectContent>
                 </Select>
               </div>
-            </div>
-          </div>
-        )}
+            </>
+          )}
+        </div>
       </FormSection>
 
-      {/* Technical Training */}
+      {/* Technical Training - Two Column */}
       <FormSection icon={Wrench} title="技術指導 & 教育訓練">
-        <div className="space-y-5">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           <OptionCard
             title="專案技術指導（Level 5）"
             description="針對專案開發遇到的關鍵問題，提供 1對1 手把手指導"
@@ -343,7 +345,7 @@ export function InquiryForm() {
             onSelect={() => updateField("techGuidance", !formData.techGuidance)}
             hasExpandableContent
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-4">
               <div className="space-y-2">
                 <Label className="text-sm">講師規格</Label>
                 <Select
@@ -354,8 +356,8 @@ export function InquiryForm() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="基礎講師">基礎講師（1對1）- NT$ 5,000/hr</SelectItem>
-                    <SelectItem value="指定講師">指定講師（1對1）- NT$ 7,000/hr</SelectItem>
+                    <SelectItem value="基礎講師">基礎講師 - NT$ 5,000/hr</SelectItem>
+                    <SelectItem value="指定講師">指定講師 - NT$ 7,000/hr</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -379,7 +381,7 @@ export function InquiryForm() {
             onSelect={() => updateField("eduTraining", !formData.eduTraining)}
             hasExpandableContent
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-4">
               <div className="space-y-2">
                 <Label className="text-sm">課程等級</Label>
                 <Select
@@ -390,12 +392,12 @@ export function InquiryForm() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="基礎課程_基礎講師">基礎課程 - 基礎講師（團體）- NT$ 6,000/hr</SelectItem>
-                    <SelectItem value="基礎課程_指定講師">基礎課程 - 指定講師（團體）- NT$ 8,000/hr</SelectItem>
-                    <SelectItem value="中階課程_基礎講師">中階課程 - 基礎講師（團體）- NT$ 7,000/hr</SelectItem>
-                    <SelectItem value="中階課程_指定講師">中階課程 - 指定講師（團體）- NT$ 9,000/hr</SelectItem>
-                    <SelectItem value="進階課程_基礎講師">進階課程 - 基礎講師（團體）- NT$ 8,000/hr</SelectItem>
-                    <SelectItem value="進階課程_指定講師">進階課程 - 指定講師（團體）- NT$ 10,000/hr</SelectItem>
+                    <SelectItem value="基礎課程_基礎講師">基礎課程 - 基礎講師 - NT$ 6,000/hr</SelectItem>
+                    <SelectItem value="基礎課程_指定講師">基礎課程 - 指定講師 - NT$ 8,000/hr</SelectItem>
+                    <SelectItem value="中階課程_基礎講師">中階課程 - 基礎講師 - NT$ 7,000/hr</SelectItem>
+                    <SelectItem value="中階課程_指定講師">中階課程 - 指定講師 - NT$ 9,000/hr</SelectItem>
+                    <SelectItem value="進階課程_基礎講師">進階課程 - 基礎講師 - NT$ 8,000/hr</SelectItem>
+                    <SelectItem value="進階課程_指定講師">進階課程 - 指定講師 - NT$ 10,000/hr</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -412,7 +414,9 @@ export function InquiryForm() {
               </div>
             </div>
           </OptionCard>
+        </div>
 
+        <div className="mt-5">
           <OptionCard
             title="教練指導（Level 4+）"
             description="適用 5人以下小班制、1對1或團隊帶領"
@@ -454,7 +458,7 @@ export function InquiryForm() {
       </FormSection>
 
       {/* Notes */}
-      <div className="mt-16 space-y-2">
+      <div className="pt-12 mt-12 border-t border-border/40">
         <Label htmlFor="notes" className="text-sm">其他需求或備註</Label>
         <Textarea
           id="notes"
@@ -462,6 +466,7 @@ export function InquiryForm() {
           onChange={(e) => updateField("notes", e.target.value)}
           placeholder="請輸入您希望開始的時間，或其他特殊需求..."
           rows={4}
+          className="mt-2"
         />
       </div>
 
