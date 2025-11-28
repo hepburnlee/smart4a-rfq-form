@@ -3,17 +3,7 @@ import { InquiryForm } from "@/components/InquiryForm";
 const Index = () => {
   return (
     <main className="min-h-screen bg-background py-12 px-4 sm:px-6">
-      {/* Decorative background pattern */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none opacity-[0.03]">
-        <div className="absolute top-0 left-0 w-full h-full" 
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L30 60M0 30L60 30' stroke='%239370DB' stroke-width='0.5'/%3E%3C/svg%3E")`,
-            backgroundSize: '60px 60px'
-          }}
-        />
-      </div>
-
-      <div className="relative max-w-3xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         {/* Main Card */}
         <div className="bg-card rounded-2xl shadow-lg border border-border/50 overflow-hidden">
           {/* Elegant top accent */}
