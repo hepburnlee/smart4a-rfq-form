@@ -96,16 +96,19 @@ export default {
   		},
 		fontFamily: {
 			sans: [
-				'Inter',
+				'Noto Sans JP',
+				'Hiragino Kaku Gothic ProN',
+				'Yu Gothic',
 				'ui-sans-serif',
 				'system-ui',
-				'-apple-system',
-				'BlinkMacSystemFont',
-				'Segoe UI',
-				'Roboto',
-				'Helvetica Neue',
-				'Arial',
 				'sans-serif'
+			],
+			serif: [
+				'Noto Serif JP',
+				'Hiragino Mincho ProN',
+				'Yu Mincho',
+				'ui-serif',
+				'serif'
 			]
 		}
   	}

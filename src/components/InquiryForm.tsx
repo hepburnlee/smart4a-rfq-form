@@ -108,27 +108,22 @@ export function InquiryForm() {
   const totalPrice = useMemo(() => {
     let total = 0;
 
-    // Project plans
     if (formData.projectPlans.includes("基礎陪跑方案")) total += 360000;
     if (formData.projectPlans.includes("完整轉型方案")) total += 480000;
 
-    // Consultant
     if (formData.consultantTier && CONSULTANT_PRICES[formData.consultantTier]) {
       total += CONSULTANT_PRICES[formData.consultantTier][formData.consultantType] || 0;
       if (formData.consultantAddonRag === "加購") total += RAG_PRICE;
     }
 
-    // Tech guidance
     if (formData.techGuidance) {
       total += (TECH_PRICES[formData.techGuidanceType] || 0) * formData.techGuidanceHours;
     }
 
-    // Education
     if (formData.eduTraining) {
       total += (EDU_PRICES[formData.eduTrainingLevel] || 0) * formData.eduTrainingHours;
     }
 
-    // Coaching
     if (formData.coaching) {
       total += (COACH_PRICES[formData.coachType] || 0) * formData.coachHours;
     }
@@ -142,7 +137,6 @@ export function InquiryForm() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate submission
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
     toast.success("詢價單已成功送出！我們將盡快與您聯繫。");
@@ -155,26 +149,28 @@ export function InquiryForm() {
       <FormSection icon="🏢" title="客戶聯絡資訊">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div className="space-y-2">
-            <Label htmlFor="company">公司名稱 *</Label>
+            <Label htmlFor="company" className="text-sm">公司名稱 *</Label>
             <Input
               id="company"
               value={formData.company}
               onChange={(e) => updateField("company", e.target.value)}
               placeholder="例如：未來科技有限公司"
               required
+              className="h-11"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="contactPerson">聯絡人姓名 *</Label>
+            <Label htmlFor="contactPerson" className="text-sm">聯絡人姓名 *</Label>
             <Input
               id="contactPerson"
               value={formData.contactPerson}
               onChange={(e) => updateField("contactPerson", e.target.value)}
               required
+              className="h-11"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="email">聯絡 Email *</Label>
+            <Label htmlFor="email" className="text-sm">聯絡 Email *</Label>
             <Input
               id="email"
               type="email"
@@ -182,10 +178,11 @@ export function InquiryForm() {
               onChange={(e) => updateField("email", e.target.value)}
               placeholder="name@company.com"
               required
+              className="h-11"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="phone">聯絡電話 *</Label>
+            <Label htmlFor="phone" className="text-sm">聯絡電話 *</Label>
             <Input
               id="phone"
               type="tel"
@@ -193,43 +190,47 @@ export function InquiryForm() {
               onChange={(e) => updateField("phone", e.target.value)}
               placeholder="0912-345-678"
               required
+              className="h-11"
             />
           </div>
         </div>
 
         {/* Invoice Section */}
-        <div className="mt-6 p-5 bg-muted/50 rounded-xl">
-          <p className="text-sm text-muted-foreground font-semibold mb-4">
+        <div className="mt-6 p-5 bg-accent/30 rounded-xl border border-border/30">
+          <p className="text-sm text-muted-foreground mb-4">
             ▼ 若您需要正式報價單，請填寫以下發票資訊 (選填)
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="space-y-2">
-              <Label htmlFor="taxId">統一編號</Label>
+              <Label htmlFor="taxId" className="text-sm">統一編號</Label>
               <Input
                 id="taxId"
                 value={formData.taxId}
                 onChange={(e) => updateField("taxId", e.target.value)}
                 maxLength={8}
                 placeholder="8碼數字"
+                className="h-11"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="invoiceTitle">發票抬頭</Label>
+              <Label htmlFor="invoiceTitle" className="text-sm">發票抬頭</Label>
               <Input
                 id="invoiceTitle"
                 value={formData.invoiceTitle}
                 onChange={(e) => updateField("invoiceTitle", e.target.value)}
                 placeholder="若同公司名可留空"
+                className="h-11"
               />
             </div>
           </div>
           <div className="mt-5 space-y-2">
-            <Label htmlFor="address">公司地址</Label>
+            <Label htmlFor="address" className="text-sm">公司地址</Label>
             <Input
               id="address"
               value={formData.address}
               onChange={(e) => updateField("address", e.target.value)}
               placeholder="發票地址"
+              className="h-11"
             />
           </div>
         </div>
@@ -239,28 +240,28 @@ export function InquiryForm() {
       <FormSection icon="🚀" title="陪跑與轉型方案">
         <OptionCard
           title="基礎陪跑方案"
-          description="48小時專業指導、3個自動化流程導入。"
+          description="48小時專業指導、3個自動化流程導入"
           price="NT$ 360,000"
           selected={formData.projectPlans.includes("基礎陪跑方案")}
           onSelect={() => toggleProjectPlan("基礎陪跑方案")}
         />
         <OptionCard
           title="完整轉型方案"
-          description="含 AI Agent 建置、知識庫訓練、5個自動化流程導入。"
+          description="含 AI Agent 建置、知識庫訓練、5個自動化流程導入"
           price="NT$ 480,000"
           selected={formData.projectPlans.includes("完整轉型方案")}
           onSelect={() => toggleProjectPlan("完整轉型方案")}
         />
         <OptionCard
           title="企業客製方案"
-          description="適合多部門整合、私有化部署、複雜權限管理設計。"
+          description="適合多部門整合、私有化部署、複雜權限管理設計"
           priceLabel="專人評估報價"
           selected={formData.projectPlans.includes("企業客製方案")}
           onSelect={() => toggleProjectPlan("企業客製方案")}
           hasExpandableContent
         >
           <div className="space-y-2">
-            <Label>請簡述您的客製化需求</Label>
+            <Label className="text-sm">請簡述您的客製化需求</Label>
             <Textarea
               value={formData.customPlanDetails}
               onChange={(e) => updateField("customPlanDetails", e.target.value)}
@@ -272,56 +273,56 @@ export function InquiryForm() {
       </FormSection>
 
       {/* Consultant Services */}
-      <FormSection icon="💼" title="顧問服務 (訂閱制)">
+      <FormSection icon="💼" title="顧問服務（訂閱制）">
         <div className="space-y-2">
-          <Label>選擇方案等級</Label>
+          <Label className="text-sm">選擇方案等級</Label>
           <Select
             value={formData.consultantTier}
             onValueChange={(value) => updateField("consultantTier", value)}
           >
-            <SelectTrigger>
+            <SelectTrigger className="h-11">
               <SelectValue placeholder="-- 不需此服務 --" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="none">-- 不需此服務 --</SelectItem>
-              <SelectItem value="輕量型">輕量型 (每月1次現場指導)</SelectItem>
-              <SelectItem value="中量型">中量型 (每月2次現場指導)</SelectItem>
-              <SelectItem value="重量型">重量型 (每週1次現場指導)</SelectItem>
+              <SelectItem value="輕量型">輕量型（每月1次現場指導）</SelectItem>
+              <SelectItem value="中量型">中量型（每月2次現場指導）</SelectItem>
+              <SelectItem value="重量型">重量型（每週1次現場指導）</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         {formData.consultantTier && formData.consultantTier !== "none" && (
-          <div className="mt-4 p-5 border-2 border-primary rounded-xl bg-card animate-in slide-in-from-top-2 duration-300">
+          <div className="mt-4 p-5 border border-primary/40 rounded-xl bg-accent/30 animate-in fade-in slide-in-from-top-1 duration-300">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div className="space-y-2">
-                <Label>顧問類型</Label>
+                <Label className="text-sm">顧問類型</Label>
                 <Select
                   value={formData.consultantType}
                   onValueChange={(value) => updateField("consultantType", value)}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="h-11">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="基礎費用">基礎費用 (由公司指派)</SelectItem>
-                    <SelectItem value="指定顧問">指定顧問費用 (+費用)</SelectItem>
+                    <SelectItem value="基礎費用">基礎費用（由公司指派）</SelectItem>
+                    <SelectItem value="指定顧問">指定顧問費用（+費用）</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label>AI Knowledge 知識庫助理 (RAG)</Label>
+                <Label className="text-sm">AI Knowledge 知識庫助理（RAG）</Label>
                 <Select
                   value={formData.consultantAddonRag}
                   onValueChange={(value) => updateField("consultantAddonRag", value)}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="h-11">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="無">不需要</SelectItem>
-                    <SelectItem value="加購">加購服務 (訓練助理導入)</SelectItem>
-                    <SelectItem value="贈送">已包含 (重量型方案免費贈送)</SelectItem>
+                    <SelectItem value="加購">加購服務（訓練助理導入）</SelectItem>
+                    <SelectItem value="贈送">已包含（重量型方案免費贈送）</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -333,112 +334,115 @@ export function InquiryForm() {
       {/* Technical Training */}
       <FormSection icon="🛠️" title="技術指導 & 教育訓練">
         <OptionCard
-          title="專案技術指導 (Level 5)"
-          description="針對專案開發遇到的關鍵問題，提供 1對1 手把手指導。"
+          title="專案技術指導（Level 5）"
+          description="針對專案開發遇到的關鍵問題，提供 1對1 手把手指導"
           selected={formData.techGuidance}
           onSelect={() => updateField("techGuidance", !formData.techGuidance)}
           hasExpandableContent
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="space-y-2">
-              <Label>講師規格</Label>
+              <Label className="text-sm">講師規格</Label>
               <Select
                 value={formData.techGuidanceType}
                 onValueChange={(value) => updateField("techGuidanceType", value)}
               >
-                <SelectTrigger>
+                <SelectTrigger className="h-11">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="基礎講師">基礎講師 (1對1) - NT$ 5,000/hr</SelectItem>
-                  <SelectItem value="指定講師">指定講師 (1對1) - NT$ 7,000/hr</SelectItem>
+                  <SelectItem value="基礎講師">基礎講師（1對1）- NT$ 5,000/hr</SelectItem>
+                  <SelectItem value="指定講師">指定講師（1對1）- NT$ 7,000/hr</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-2">
-              <Label>預計時數 (小時)</Label>
+              <Label className="text-sm">預計時數（小時）</Label>
               <Input
                 type="number"
                 min={2}
                 value={formData.techGuidanceHours}
                 onChange={(e) => updateField("techGuidanceHours", parseInt(e.target.value) || 2)}
+                className="h-11"
               />
             </div>
           </div>
         </OptionCard>
 
         <OptionCard
-          title="企業教育訓練 (Level 3+)"
-          description="適用 5-30人團體課程，每單元3小時。"
+          title="企業教育訓練（Level 3+）"
+          description="適用 5-30人團體課程，每單元3小時"
           selected={formData.eduTraining}
           onSelect={() => updateField("eduTraining", !formData.eduTraining)}
           hasExpandableContent
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="space-y-2">
-              <Label>課程等級</Label>
+              <Label className="text-sm">課程等級</Label>
               <Select
                 value={formData.eduTrainingLevel}
                 onValueChange={(value) => updateField("eduTrainingLevel", value)}
               >
-                <SelectTrigger>
+                <SelectTrigger className="h-11">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="基礎課程_基礎講師">基礎課程 - 基礎講師 (團體) - NT$ 6,000/hr</SelectItem>
-                  <SelectItem value="基礎課程_指定講師">基礎課程 - 指定講師 (團體) - NT$ 8,000/hr</SelectItem>
-                  <SelectItem value="中階課程_基礎講師">中階課程 - 基礎講師 (團體) - NT$ 7,000/hr</SelectItem>
-                  <SelectItem value="中階課程_指定講師">中階課程 - 指定講師 (團體) - NT$ 9,000/hr</SelectItem>
-                  <SelectItem value="進階課程_基礎講師">進階課程 - 基礎講師 (團體) - NT$ 8,000/hr</SelectItem>
-                  <SelectItem value="進階課程_指定講師">進階課程 - 指定講師 (團體) - NT$ 10,000/hr</SelectItem>
+                  <SelectItem value="基礎課程_基礎講師">基礎課程 - 基礎講師（團體）- NT$ 6,000/hr</SelectItem>
+                  <SelectItem value="基礎課程_指定講師">基礎課程 - 指定講師（團體）- NT$ 8,000/hr</SelectItem>
+                  <SelectItem value="中階課程_基礎講師">中階課程 - 基礎講師（團體）- NT$ 7,000/hr</SelectItem>
+                  <SelectItem value="中階課程_指定講師">中階課程 - 指定講師（團體）- NT$ 9,000/hr</SelectItem>
+                  <SelectItem value="進階課程_基礎講師">進階課程 - 基礎講師（團體）- NT$ 8,000/hr</SelectItem>
+                  <SelectItem value="進階課程_指定講師">進階課程 - 指定講師（團體）- NT$ 10,000/hr</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-2">
-              <Label>預計時數 (每單元3小時)</Label>
+              <Label className="text-sm">預計時數（每單元3小時）</Label>
               <Input
                 type="number"
                 min={3}
                 step={3}
                 value={formData.eduTrainingHours}
                 onChange={(e) => updateField("eduTrainingHours", parseInt(e.target.value) || 3)}
+                className="h-11"
               />
             </div>
           </div>
         </OptionCard>
 
         <OptionCard
-          title="教練指導 (Level 4+)"
-          description="適用 5人以下小班制、1對1或團隊帶領。"
+          title="教練指導（Level 4+）"
+          description="適用 5人以下小班制、1對1或團隊帶領"
           selected={formData.coaching}
           onSelect={() => updateField("coaching", !formData.coaching)}
           hasExpandableContent
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="space-y-2">
-              <Label>指導形式</Label>
+              <Label className="text-sm">指導形式</Label>
               <Select
                 value={formData.coachType}
                 onValueChange={(value) => updateField("coachType", value)}
               >
-                <SelectTrigger>
+                <SelectTrigger className="h-11">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="1對1_基礎">1對1手把手 - 基礎教練 - NT$ 3,000/hr</SelectItem>
                   <SelectItem value="1對1_指定">1對1手把手 - 指定教練 - NT$ 4,500/hr</SelectItem>
-                  <SelectItem value="1對多_基礎">1對多(團隊帶領) - 基礎教練 - NT$ 4,500/hr</SelectItem>
-                  <SelectItem value="1對多_指定">1對多(團隊帶領) - 指定教練 - NT$ 6,000/hr</SelectItem>
+                  <SelectItem value="1對多_基礎">1對多（團隊帶領）- 基礎教練 - NT$ 4,500/hr</SelectItem>
+                  <SelectItem value="1對多_指定">1對多（團隊帶領）- 指定教練 - NT$ 6,000/hr</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-2">
-              <Label>預計時數 (小時)</Label>
+              <Label className="text-sm">預計時數（小時）</Label>
               <Input
                 type="number"
                 min={2}
                 value={formData.coachHours}
                 onChange={(e) => updateField("coachHours", parseInt(e.target.value) || 2)}
+                className="h-11"
               />
             </div>
           </div>
@@ -446,8 +450,8 @@ export function InquiryForm() {
       </FormSection>
 
       {/* Notes */}
-      <div className="mt-10 space-y-2">
-        <Label htmlFor="notes">其他需求或備註</Label>
+      <div className="mt-12 space-y-2">
+        <Label htmlFor="notes" className="text-sm">其他需求或備註</Label>
         <Textarea
           id="notes"
           value={formData.notes}
@@ -464,7 +468,7 @@ export function InquiryForm() {
       <Button
         type="submit"
         size="lg"
-        className="w-full mt-6 h-16 text-lg font-bold"
+        className="w-full mt-8 h-14 text-base font-medium tracking-wide transition-all duration-300 hover:shadow-lg"
         disabled={isSubmitting}
       >
         {isSubmitting ? (
@@ -474,7 +478,7 @@ export function InquiryForm() {
           </span>
         ) : (
           <span className="flex items-center gap-2">
-            <Send className="w-5 h-5" />
+            <Send className="w-4 h-4" />
             送出詢價單
           </span>
         )}

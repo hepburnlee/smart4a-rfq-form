@@ -10,12 +10,13 @@ interface FormSectionProps {
 
 export function FormSection({ icon, title, children, className }: FormSectionProps) {
   return (
-    <div className={cn("mt-10", className)}>
-      <div className="flex items-center gap-3 mb-6 pb-4 border-b border-border">
-        <span className="text-2xl">{icon}</span>
-        <h2 className="text-xl font-bold text-foreground">{title}</h2>
+    <section className={cn("mt-12", className)}>
+      <div className="flex items-center gap-3 mb-6">
+        <span className="text-xl opacity-80">{icon}</span>
+        <h2 className="text-lg font-medium text-foreground tracking-wide">{title}</h2>
+        <div className="flex-1 h-px bg-gradient-to-r from-border to-transparent ml-2" />
       </div>
       {children}
-    </div>
+    </section>
   );
 }

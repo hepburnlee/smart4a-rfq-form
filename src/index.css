@@ -1,101 +1,108 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Noto+Serif+JP:wght@400;500;600;700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 250 20% 98%;
-    --foreground: 224 71% 4%;
+    /* Japanese Wisteria Purple Palette - 藤色 */
+    --background: 270 20% 98%;
+    --foreground: 270 15% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 224 71% 4%;
+    --card-foreground: 270 15% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 224 71% 4%;
+    --popover-foreground: 270 15% 15%;
 
-    --primary: 271 81% 56%;
+    /* Soft Wisteria Purple - 藤紫 */
+    --primary: 270 40% 60%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 270 60% 96%;
-    --secondary-foreground: 271 81% 40%;
+    /* Light Lavender - 薄藤色 */
+    --secondary: 270 30% 94%;
+    --secondary-foreground: 270 40% 35%;
 
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 9% 46%;
+    /* Soft Gray with purple tint - 灰藤 */
+    --muted: 270 10% 94%;
+    --muted-foreground: 270 10% 45%;
 
-    --accent: 271 81% 96%;
-    --accent-foreground: 271 81% 40%;
+    /* Very light wisteria - 白藤 */
+    --accent: 270 35% 96%;
+    --accent-foreground: 270 40% 40%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 60% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 271 81% 56%;
+    /* Subtle borders - 霞色 */
+    --border: 270 15% 88%;
+    --input: 270 15% 88%;
+    --ring: 270 40% 65%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 224 71% 4%;
-    --sidebar-primary: 271 81% 56%;
+    --sidebar-foreground: 270 15% 15%;
+    --sidebar-primary: 270 40% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 271 81% 96%;
-    --sidebar-accent-foreground: 271 81% 40%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 271 81% 56%;
+    --sidebar-accent: 270 35% 96%;
+    --sidebar-accent-foreground: 270 40% 40%;
+    --sidebar-border: 270 15% 88%;
+    --sidebar-ring: 270 40% 65%;
 
-    --chart-1: 271 81% 56%;
-    --chart-2: 280 75% 60%;
-    --chart-3: 262 83% 58%;
-    --chart-4: 250 70% 50%;
-    --chart-5: 290 65% 55%;
+    --chart-1: 270 40% 60%;
+    --chart-2: 280 35% 65%;
+    --chart-3: 260 38% 62%;
+    --chart-4: 290 30% 70%;
+    --chart-5: 250 35% 68%;
 
-    --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    --font-sans: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
+    --font-serif: 'Noto Serif JP', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
   }
 
   .dark {
-    --background: 224 71% 4%;
-    --foreground: 0 0% 98%;
+    --background: 270 20% 8%;
+    --foreground: 270 10% 95%;
 
-    --card: 224 50% 8%;
-    --card-foreground: 0 0% 98%;
+    --card: 270 15% 12%;
+    --card-foreground: 270 10% 95%;
 
-    --popover: 224 50% 8%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 270 15% 12%;
+    --popover-foreground: 270 10% 95%;
 
-    --primary: 271 91% 65%;
-    --primary-foreground: 271 81% 10%;
+    --primary: 270 45% 70%;
+    --primary-foreground: 270 40% 10%;
 
-    --secondary: 271 30% 20%;
-    --secondary-foreground: 271 70% 90%;
+    --secondary: 270 20% 18%;
+    --secondary-foreground: 270 30% 85%;
 
-    --muted: 224 30% 15%;
-    --muted-foreground: 220 9% 65%;
+    --muted: 270 15% 20%;
+    --muted-foreground: 270 10% 65%;
 
-    --accent: 271 40% 20%;
-    --accent-foreground: 271 70% 90%;
+    --accent: 270 25% 18%;
+    --accent-foreground: 270 35% 80%;
 
-    --destructive: 0 62% 30%;
+    --destructive: 0 50% 45%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 224 30% 20%;
-    --input: 224 30% 20%;
-    --ring: 271 91% 65%;
+    --border: 270 15% 22%;
+    --input: 270 15% 22%;
+    --ring: 270 45% 70%;
 
-    --sidebar-background: 224 50% 8%;
-    --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 271 91% 65%;
-    --sidebar-primary-foreground: 271 81% 10%;
-    --sidebar-accent: 271 40% 20%;
-    --sidebar-accent-foreground: 271 70% 90%;
-    --sidebar-border: 224 30% 20%;
-    --sidebar-ring: 271 91% 65%;
+    --sidebar-background: 270 15% 12%;
+    --sidebar-foreground: 270 10% 95%;
+    --sidebar-primary: 270 45% 70%;
+    --sidebar-primary-foreground: 270 40% 10%;
+    --sidebar-accent: 270 25% 18%;
+    --sidebar-accent-foreground: 270 35% 80%;
+    --sidebar-border: 270 15% 22%;
+    --sidebar-ring: 270 45% 70%;
 
-    --chart-1: 271 91% 65%;
-    --chart-2: 280 85% 70%;
-    --chart-3: 262 93% 68%;
-    --chart-4: 250 80% 60%;
-    --chart-5: 290 75% 65%;
+    --chart-1: 270 45% 70%;
+    --chart-2: 280 40% 75%;
+    --chart-3: 260 43% 72%;
+    --chart-4: 290 35% 78%;
+    --chart-5: 250 40% 74%;
   }
 }
 
@@ -105,12 +112,21 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-sans);
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-serif);
   }
 }
 
 @layer utilities {
-  .gradient-purple {
-    background: linear-gradient(135deg, hsl(271 81% 56%) 0%, hsl(280 75% 60%) 100%);
+  .font-serif {
+    font-family: var(--font-serif);
+  }
+  
+  .gradient-wisteria {
+    background: linear-gradient(135deg, hsl(270 40% 60%) 0%, hsl(280 35% 65%) 100%);
   }
 }
