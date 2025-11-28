@@ -136,8 +136,20 @@ export function InquiryForm() {
     return formData.company;
   };
 
+  const hasAnyServiceSelected = formData.projectPlan || 
+    (formData.consultantTier && formData.consultantTier !== "none") || 
+    formData.trainingType;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!hasAnyServiceSelected) {
+      toast.error("請至少選擇一項服務", {
+        description: "陪跑方案、顧問服務、技術指導擇一",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
