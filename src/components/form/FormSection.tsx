@@ -11,7 +11,7 @@ interface FormSectionProps {
 
 export function FormSection({ icon: Icon, title, children, className }: FormSectionProps) {
   return (
-    <section className={cn("mt-16", className)}>
+    <section className={cn("mt-20 first:mt-0", className)}>
       <div className="flex items-center gap-3 mb-8">
         <Icon className="w-5 h-5 text-primary/70" strokeWidth={1.5} />
         <h2 className="text-lg font-medium text-foreground tracking-wide">{title}</h2>
