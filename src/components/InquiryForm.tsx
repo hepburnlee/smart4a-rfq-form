@@ -18,18 +18,16 @@ interface FormData {
   taxId: string;
   invoiceTitle: string;
   address: string;
-  projectPlans: string[];
+  projectPlan: string;
   customPlanDetails: string;
   consultantTier: string;
   consultantType: string;
   consultantAddonRag: string;
-  techGuidance: boolean;
+  trainingType: string;
   techGuidanceType: string;
   techGuidanceHours: number;
-  eduTraining: boolean;
   eduTrainingLevel: string;
   eduTrainingHours: number;
-  coaching: boolean;
   coachType: string;
   coachHours: number;
   notes: string;
@@ -73,18 +71,16 @@ export function InquiryForm() {
     taxId: "",
     invoiceTitle: "",
     address: "",
-    projectPlans: [],
+    projectPlan: "",
     customPlanDetails: "",
     consultantTier: "",
     consultantType: "基礎費用",
     consultantAddonRag: "無",
-    techGuidance: false,
+    trainingType: "",
     techGuidanceType: "基礎講師",
     techGuidanceHours: 2,
-    eduTraining: false,
     eduTrainingLevel: "基礎課程_基礎講師",
     eduTrainingHours: 3,
-    coaching: false,
     coachType: "1對1_基礎",
     coachHours: 2,
     notes: "",
@@ -96,61 +92,66 @@ export function InquiryForm() {
     setFormData((prev) => ({ ...prev, [key]: value }));
   };
 
-  const toggleProjectPlan = (plan: string) => {
+  const selectProjectPlan = (plan: string) => {
     setFormData((prev) => ({
       ...prev,
-      projectPlans: prev.projectPlans.includes(plan)
-        ? prev.projectPlans.filter((p) => p !== plan)
-        : [...prev.projectPlans, plan],
+      projectPlan: prev.projectPlan === plan ? "" : plan,
+    }));
+  };
+
+  const selectTrainingType = (type: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      trainingType: prev.trainingType === type ? "" : type,
     }));
   };
 
   const totalPrice = useMemo(() => {
     let total = 0;
 
-    if (formData.projectPlans.includes("基礎陪跑方案")) total += 360000;
-    if (formData.projectPlans.includes("完整轉型方案")) total += 480000;
+    if (formData.projectPlan === "基礎陪跑方案") total += 360000;
+    if (formData.projectPlan === "完整轉型方案") total += 480000;
 
     if (formData.consultantTier && CONSULTANT_PRICES[formData.consultantTier]) {
       total += CONSULTANT_PRICES[formData.consultantTier][formData.consultantType] || 0;
       if (formData.consultantAddonRag === "加購") total += RAG_PRICE;
     }
 
-    if (formData.techGuidance) {
+    if (formData.trainingType === "techGuidance") {
       total += (TECH_PRICES[formData.techGuidanceType] || 0) * formData.techGuidanceHours;
     }
 
-    if (formData.eduTraining) {
+    if (formData.trainingType === "eduTraining") {
       total += (EDU_PRICES[formData.eduTrainingLevel] || 0) * formData.eduTrainingHours;
     }
 
-    if (formData.coaching) {
+    if (formData.trainingType === "coaching") {
       total += (COACH_PRICES[formData.coachType] || 0) * formData.coachHours;
     }
 
     return total;
   }, [formData]);
 
-  const hasCustomPlan = formData.projectPlans.includes("企業客製方案");
+  const hasCustomPlan = formData.projectPlan === "企業客製方案";
 
   const buildSummary = () => {
     const lines: string[] = [];
     lines.push(`📋 ${formData.company}`);
     lines.push(`👤 ${formData.contactPerson} / ${formData.email}`);
     
-    if (formData.projectPlans.length > 0) {
-      lines.push(`📦 方案：${formData.projectPlans.join("、")}`);
+    if (formData.projectPlan) {
+      lines.push(`📦 方案：${formData.projectPlan}`);
     }
     if (formData.consultantTier && formData.consultantTier !== "none") {
       lines.push(`💼 顧問：${formData.consultantTier}（${formData.consultantType}）`);
     }
-    if (formData.techGuidance) {
+    if (formData.trainingType === "techGuidance") {
       lines.push(`🔧 技術指導：${formData.techGuidanceHours}小時`);
     }
-    if (formData.eduTraining) {
+    if (formData.trainingType === "eduTraining") {
       lines.push(`📚 教育訓練：${formData.eduTrainingHours}小時`);
     }
-    if (formData.coaching) {
+    if (formData.trainingType === "coaching") {
       lines.push(`🎯 教練指導：${formData.coachHours}小時`);
     }
     if (totalPrice > 0) {
@@ -293,15 +294,15 @@ export function InquiryForm() {
             title="基礎陪跑方案"
             description="48小時專業指導、3個自動化流程導入"
             price="NT$ 360,000"
-            selected={formData.projectPlans.includes("基礎陪跑方案")}
-            onSelect={() => toggleProjectPlan("基礎陪跑方案")}
+            selected={formData.projectPlan === "基礎陪跑方案"}
+            onSelect={() => selectProjectPlan("基礎陪跑方案")}
           />
           <OptionCard
             title="完整轉型方案"
             description="含 AI Agent 建置、知識庫訓練、5個自動化流程導入"
             price="NT$ 480,000"
-            selected={formData.projectPlans.includes("完整轉型方案")}
-            onSelect={() => toggleProjectPlan("完整轉型方案")}
+            selected={formData.projectPlan === "完整轉型方案"}
+            onSelect={() => selectProjectPlan("完整轉型方案")}
           />
         </div>
         <div className="mt-5">
@@ -309,8 +310,8 @@ export function InquiryForm() {
             title="企業客製方案"
             description="適合多部門整合、私有化部署、複雜權限管理設計"
             priceLabel="專人評估報價"
-            selected={formData.projectPlans.includes("企業客製方案")}
-            onSelect={() => toggleProjectPlan("企業客製方案")}
+            selected={formData.projectPlan === "企業客製方案"}
+            onSelect={() => selectProjectPlan("企業客製方案")}
             hasExpandableContent
           >
             <div className="space-y-2">
@@ -391,8 +392,8 @@ export function InquiryForm() {
           <OptionCard
             title="專案技術指導（Level 5）"
             description="針對專案開發遇到的關鍵問題，提供 1對1 手把手指導"
-            selected={formData.techGuidance}
-            onSelect={() => updateField("techGuidance", !formData.techGuidance)}
+            selected={formData.trainingType === "techGuidance"}
+            onSelect={() => selectTrainingType("techGuidance")}
             hasExpandableContent
           >
             <div className="grid grid-cols-1 gap-4">
@@ -427,8 +428,8 @@ export function InquiryForm() {
           <OptionCard
             title="企業教育訓練（Level 3+）"
             description="適用 5-30人團體課程，每單元3小時"
-            selected={formData.eduTraining}
-            onSelect={() => updateField("eduTraining", !formData.eduTraining)}
+            selected={formData.trainingType === "eduTraining"}
+            onSelect={() => selectTrainingType("eduTraining")}
             hasExpandableContent
           >
             <div className="grid grid-cols-1 gap-4">
@@ -470,8 +471,8 @@ export function InquiryForm() {
           <OptionCard
             title="教練指導（Level 4+）"
             description="適用 5人以下小班制、1對1或團隊帶領"
-            selected={formData.coaching}
-            onSelect={() => updateField("coaching", !formData.coaching)}
+            selected={formData.trainingType === "coaching"}
+            onSelect={() => selectTrainingType("coaching")}
             hasExpandableContent
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
