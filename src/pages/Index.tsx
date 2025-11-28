@@ -49,7 +49,7 @@ const Index = () => {
             <span className="text-xs tracking-wider">✦</span>
             <div className="h-px w-8 bg-border" />
           </div>
-          © 2024 Smart4A. All rights reserved.
+          © 2025 Smart4A. All rights reserved.
         </footer>
       </div>
     </main>
