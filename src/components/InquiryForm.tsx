@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { format } from "date-fns";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -188,7 +189,7 @@ export function InquiryForm() {
         body: JSON.stringify({
           ...formData,
           totalPrice,
-          timestamp: new Date().toISOString(),
+          timestamp: format(new Date(), "yyyy-MM-dd HH:mm:ss"),
         }),
       });
 
