@@ -33,6 +33,7 @@ interface FormData {
   customPlanDetails: string;
   consultantTier: string;
   consultantType: string;
+  consultantMonths: number;
   consultantAddonRag: string;
   trainingType: string;
   trainingTier: string;
@@ -94,6 +95,7 @@ export function InquiryForm() {
     customPlanDetails: "",
     consultantTier: "",
     consultantType: "基礎費用",
+    consultantMonths: 1,
     consultantAddonRag: "無",
     trainingType: "",
     trainingTier: "",
@@ -133,7 +135,8 @@ export function InquiryForm() {
     if (formData.projectPlan === "完整轉型方案") total += 480000;
 
     if (formData.consultantTier && CONSULTANT_PRICES[formData.consultantTier]) {
-      total += CONSULTANT_PRICES[formData.consultantTier][formData.consultantType] || 0;
+      const monthlyFee = CONSULTANT_PRICES[formData.consultantTier][formData.consultantType] || 0;
+      total += monthlyFee * formData.consultantMonths;
       if (formData.consultantAddonRag === "加購") total += RAG_PRICE;
     }
 
@@ -162,7 +165,7 @@ export function InquiryForm() {
     const services: string[] = [];
     if (formData.projectPlan) services.push(`• ${formData.projectPlan}`);
     if (formData.consultantTier && formData.consultantTier !== "none") {
-      services.push(`• 顧問服務：${formData.consultantTier}（${formData.consultantType}）`);
+      services.push(`• 顧問服務：${formData.consultantTier}（${formData.consultantType}）× ${formData.consultantMonths} 個月`);
     }
     if (formData.trainingType) {
       const hoursPerSession = HOURS_PER_SESSION[formData.trainingType] || 2;
@@ -416,6 +419,16 @@ export function InquiryForm() {
                     <SelectItem value="指定顧問">指定顧問費用（+費用）</SelectItem>
                   </SelectContent>
                 </Select>
+              </div>
+              <div className="space-y-2">
+                <Label className="text-sm">服務月數</Label>
+                <Input
+                  type="number"
+                  min={1}
+                  value={formData.consultantMonths}
+                  onChange={(e) => updateField("consultantMonths", parseInt(e.target.value) || 1)}
+                  className="h-12"
+                />
               </div>
               <div className="space-y-2 md:col-span-2">
                 <Label className="text-sm">AI Knowledge 知識庫助理（RAG）</Label>
