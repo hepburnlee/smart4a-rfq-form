@@ -36,7 +36,7 @@ interface FormData {
   consultantAddonRag: string;
   trainingType: string;
   trainingTier: string;
-  trainingHours: number;
+  trainingSessions: number;
   notes: string;
 }
 
@@ -69,10 +69,16 @@ const TRAINING_PRICES: Record<string, Record<string, number>> = {
   },
 };
 
-const TRAINING_DEFAULTS: Record<string, { tier: string; hours: number }> = {
-  專案技術指導: { tier: "基礎講師", hours: 2 },
-  企業教育訓練: { tier: "基礎課程_基礎講師", hours: 3 },
-  教練指導: { tier: "1對1_基礎", hours: 2 },
+const TRAINING_DEFAULTS: Record<string, { tier: string; sessions: number }> = {
+  專案技術指導: { tier: "基礎講師", sessions: 1 },
+  企業教育訓練: { tier: "基礎課程_基礎講師", sessions: 1 },
+  教練指導: { tier: "1對1_基礎", sessions: 1 },
+};
+
+const HOURS_PER_SESSION: Record<string, number> = {
+  專案技術指導: 2,
+  企業教育訓練: 3,
+  教練指導: 2,
 };
 
 export function InquiryForm() {
@@ -91,7 +97,7 @@ export function InquiryForm() {
     consultantAddonRag: "無",
     trainingType: "",
     trainingTier: "",
-    trainingHours: 2,
+    trainingSessions: 1,
     notes: "",
   };
 
@@ -113,10 +119,10 @@ export function InquiryForm() {
   const selectTrainingType = (type: string) => {
     setFormData((prev) => {
       if (prev.trainingType === type) {
-        return { ...prev, trainingType: "", trainingTier: "", trainingHours: 2 };
+        return { ...prev, trainingType: "", trainingTier: "", trainingSessions: 1 };
       }
-      const defaults = TRAINING_DEFAULTS[type] || { tier: "", hours: 2 };
-      return { ...prev, trainingType: type, trainingTier: defaults.tier, trainingHours: defaults.hours };
+      const defaults = TRAINING_DEFAULTS[type] || { tier: "", sessions: 1 };
+      return { ...prev, trainingType: type, trainingTier: defaults.tier, trainingSessions: defaults.sessions };
     });
   };
 
@@ -132,7 +138,8 @@ export function InquiryForm() {
     }
 
     if (formData.trainingType && TRAINING_PRICES[formData.trainingType]) {
-      total += (TRAINING_PRICES[formData.trainingType][formData.trainingTier] || 0) * formData.trainingHours;
+      const hoursPerSession = HOURS_PER_SESSION[formData.trainingType] || 2;
+      total += (TRAINING_PRICES[formData.trainingType][formData.trainingTier] || 0) * hoursPerSession * formData.trainingSessions;
     }
 
     return total;
@@ -158,7 +165,8 @@ export function InquiryForm() {
       services.push(`• 顧問服務：${formData.consultantTier}（${formData.consultantType}）`);
     }
     if (formData.trainingType) {
-      services.push(`• ${formData.trainingType}：${formData.trainingHours} 小時`);
+      const hoursPerSession = HOURS_PER_SESSION[formData.trainingType] || 2;
+      services.push(`• ${formData.trainingType}：${formData.trainingSessions} 次（每次 ${hoursPerSession} 小時）`);
     }
     return services;
   };
@@ -457,12 +465,12 @@ export function InquiryForm() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label className="text-sm">預計時數（小時）</Label>
+                <Label className="text-sm">預計次數（每次 2 小時）</Label>
                 <Input
                   type="number"
-                  min={2}
-                  value={formData.trainingHours}
-                  onChange={(e) => updateField("trainingHours", parseInt(e.target.value) || 2)}
+                  min={1}
+                  value={formData.trainingSessions}
+                  onChange={(e) => updateField("trainingSessions", parseInt(e.target.value) || 1)}
                   className="h-12"
                 />
               </div>
@@ -497,13 +505,12 @@ export function InquiryForm() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label className="text-sm">預計時數（每單元3小時）</Label>
+                <Label className="text-sm">預計次數（每次 3 小時）</Label>
                 <Input
                   type="number"
-                  min={3}
-                  step={3}
-                  value={formData.trainingHours}
-                  onChange={(e) => updateField("trainingHours", parseInt(e.target.value) || 3)}
+                  min={1}
+                  value={formData.trainingSessions}
+                  onChange={(e) => updateField("trainingSessions", parseInt(e.target.value) || 1)}
                   className="h-12"
                 />
               </div>
@@ -538,12 +545,12 @@ export function InquiryForm() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label className="text-sm">預計時數（小時）</Label>
+                <Label className="text-sm">預計次數（每次 2 小時）</Label>
                 <Input
                   type="number"
-                  min={2}
-                  value={formData.trainingHours}
-                  onChange={(e) => updateField("trainingHours", parseInt(e.target.value) || 2)}
+                  min={1}
+                  value={formData.trainingSessions}
+                  onChange={(e) => updateField("trainingSessions", parseInt(e.target.value) || 1)}
                   className="h-12"
                 />
               </div>
